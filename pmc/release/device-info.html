@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>PMC Configuration-Config</title>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/application.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="#">PMC</a>
+          <div class="nav-collapse collapse">
+            <p class="navbar-text pull-right">
+              Hello, Admin <a href="login.html" class="navbar-link">Logout</a>
+            </p>
+            <ul class="nav">
+              <li><a href="main.html">Topology</a></li>
+              <li><a href="config.html">Config</a></li>
+              <li><a href="#">System Info</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+
+        <h1>SAS Switch Information</h1>
+        <div>
+            <table>
+              <tr>
+                <td>Port Number</td><td>17</td>
+              </tr>
+              <tr>
+                <td>Port Rate</td><td>48Gbps/24Gbps/12Gbps</td>
+              </tr>
+              <tr>
+                <td>SAS Address</td><td>0x5EFFFFFF040303</td>
+              </tr>
+              <tr>
+                <td>Firmware Version</td><td>0x01020304</td>
+              </tr> 
+              <tr>
+                <td>IP address</td><td>192.168.1.100</td>
+              </tr>    
+              <tr>
+                <td>Login Mode</td><td>Administrator</td>
+              </tr>    
+                
+            </table>
+        </div>
+
+        <hr>
+        <footer>
+            <p>&copy; PMC 2014</p>
+        </footer>
+
+    </div><!--/.fluid-container-->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="js/jquery.min.js"></script>
+    <script>
+    	var selectedServer;
+    	
+    	function changeServer(portId){
+    		
+    		// 让按钮颜色处于反选状态
+    		$(".info-server").each(function(index, ele) {
+    			if ($(ele).attr('id') == ('portId_'+portId)) {
+    	    		$(ele).css('background-color', '#006dcc');//处于选中状态
+    	    		selectedServer = portId;
+				} else {
+					$(ele).css('background-color', 'lightskyblue');
+				}
+    		});
+    		
+    		$("[server-list]").each(function(index, ele) {
+    			// 先把被选择的元素，改为未选中
+    			$(ele).css('background-color', 'LightSteelBlue');
+    			$(ele).attr('appointed', 'false');
+    			
+    			var serverArray = $(ele).attr('server-list').split(';');
+    			for (var i=0; i<serverArray.length;i++) {
+    				if(serverArray[i] == portId) {
+    					$(ele).css('background-color', 'LimeGreen');
+    					$(ele).attr('appointed', 'true');
+    					break;
+    				}
+    			}
+    		});
+    	}
+
+    	$(function () {
+            // 配置图
+   	    	$.get("config.xml",function(xml){
+   	    		var length = $(xml).find("switch_port").length;
+   	    		var serverDiv = $('#server-list');
+	    		var jbodDiv = $('#jbod-list');
+	    		var content = $('#topology');
+	    		
+	    		//server数量
+	    		var indexOfServer = 0;
+	    		//jbod数量
+	    		var indexOfJbod = 0;
+	    		
+   	    		$(xml).find("switch_port").each(function(index, ele) {
+   	    			var portId = $(ele).find("port_id").text();
+   	    			var hba = $(ele).find("server").text();
+   	    			var jbod = $(ele).find("jbod").text();
+   	    			
+   	    			var maxOfDisk = 0;
+   	    			
+   	    			if (hba != '') {
+   	    				// 添加server节点
+   	    				var serverSpan = $(
+    	    		        '<div class="info-box info-server info-font" style="width: 98px;" id="portId_'+portId+'">'+
+    	    		        '<a class="accordion-toggle" data-toggle="collapse" href="javascript:changeServer('+portId+')">Server'+indexOfServer+'</a></div>');
+   	    				serverSpan.css("left", 52+106*(indexOfServer)+"px");
+   	    				serverDiv.append(serverSpan);
+   	    				indexOfServer++;
+   					} else if (jbod != '') {
+   						
+   						var jbod = $('<div class="jbod box-border"></div>');
+   						jbod.css("top", 66*indexOfJbod+"px");
+
+   						var jbodTitle = $('<div class="info-box jbod-title info-font">JBOD'+indexOfJbod+'</div>');
+   						jbodTitle.css("left", "5px");
+   	    			    jbod.append(jbodTitle);
+
+   	    			    var tmpMaxOfDisk = 0;
+   	   	    			$(ele).find("disk_port").each(function(indexOfDisk, diskEle) {
+   	   	    				var portId = $(diskEle).find("port_id").text();
+   	   	    				var serverList = $(diskEle).find("server_list").text();
+   	   	    			
+   	   	    				// 添加disk到jbod
+   	   	    			    var diskSpan = $('<div class="info-box info-disk info-font" appointed="false" server-list="'+serverList+'">'+indexOfDisk+'</div>');
+   	   	    				diskSpan.css("left", 30+50*(tmpMaxOfDisk+1)+"px");
+   	   	    			    jbod.append(diskSpan);
+							tmpMaxOfDisk++;
+   						});
+   	   	    			
+   	   	    			if (tmpMaxOfDisk > maxOfDisk) {
+							maxOfDisk = tmpMaxOfDisk;
+						}
+
+   	   	    			jbod.css("width", 22+50*(maxOfDisk+1)+"px");
+   	   	    			jbodDiv.css("width", 22+51*(maxOfDisk+1)+"px");
+   	   	    			//添加jbod到jbod-list
+   						jbodDiv.append(jbod);
+
+   	   	    			//增加外围div的高度
+   						jbodDiv.css("height", 100+52*(indexOfJbod)+"px");
+   	   	    			content.css("height", 320+52*(indexOfJbod)+"px");
+   	   	    			
+   						indexOfJbod++;
+   					} else {
+   					}
+   	    		});
+   	    		// 添加svae按钮
+   	    		var saveSpan = $(
+	    		        '<div class="info-box info-server info-font" style="width: 98px; background-color: DarkRed">Save</div>');
+   	    		saveSpan.css("left", 152+106*(indexOfServer)+"px");
+	    		serverDiv.append(saveSpan);
+
+    			$(".info-disk").bind('click', function() {
+    				if(selectedServer) {//必须有server被选中，才可以选择disk
+        				if ($(this).attr('appointed') == 'false') {
+        	    			$(this).css('background-color', 'PaleGreen');
+        	    			$(this).css('appointed', 'true');
+    					}
+    				}
+    			});
+   	    	});
+        });
+    </script>
+  </body>
+</html>

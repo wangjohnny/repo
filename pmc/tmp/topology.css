@@ -1,0 +1,120 @@
+#topology {
+    position: relative;
+    color: #000;
+    width: 920px;
+    height: 450px;
+}
+
+.div-switch {
+    position: absolute;
+    top: 150px;
+    background: purple;
+    width: 900px;
+    height: 120px
+}
+
+.div-server {
+    position: absolute;
+    top: 50px;
+    /* background: YellowGreen; */
+    width: 52px;
+    height: 175px;
+}
+
+.info-box {
+    position: absolute;
+    left: 3px;
+    width: 46px;
+    height: 46px;
+    line-height:46px;
+    cursor: pointer;
+}
+
+.info-font {
+    font-size: xx-small;
+    color: white;
+    text-align: center;
+}
+
+.info-server {
+    top: 3px;
+    background: lightSkyBlue;
+}
+.info-jbod {
+    top: 123px;
+    background: orange;
+}
+
+.v-line {
+    position: absolute;
+    left: 25px;
+    background: chocolate;
+    width: 2px;
+    height: 100px;
+    z-index: 2;
+}
+
+.v-line-top {
+    top: 49px;
+}
+
+.v-line-below {
+    top: 23px;
+}
+
+.port {
+    position: absolute;
+    left: 16px;
+    background: Tan;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    z-index: 9;
+}
+
+.server-port {
+    top: 149px;
+}
+
+.jbod-port {
+    top: 3px;
+}
+
+.div-jbod {
+    position: absolute;
+    top: 197px;
+    /* background: Yellow; */
+    width: 52px;
+    height: 175px;
+}
+
+#server-list {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 960px;
+    height: 75px;
+    z-index: 5;
+}
+
+#jbod-list {
+    position: absolute;
+    left: 20px;
+    top: 90px;
+    /* background-color: LavenderBlush; */
+}
+
+.jbod {
+    position: absolute;
+    left: 10px;
+    padding: 4px;
+    height: 50px;
+    /* background-color: GoldenRod; */
+}
+
+.info-hard {
+    position: absolute;
+    top: 6px;
+    background: LightSteelBlue;
+    z-index: 9;
+}

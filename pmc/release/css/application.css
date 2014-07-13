@@ -1,0 +1,253 @@
+body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+}
+
+.sidebar-nav {
+    padding: 9px 0;
+}
+
+@media ( max-width : 980px) {
+    /* Enable use of floated navbar text */
+    .navbar-text.pull-right {
+        float: none;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+}
+
+.tree {
+    height: 440px;
+    overflow: scroll;
+    padding: 5px;
+    margin-bottom: 20px;
+    background-color: #fbfbfb;
+    border: 1px solid #999;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05)
+}
+
+.tree li {
+    list-style-type: none;
+    margin: 0;
+    padding: 10px 5px 0 5px;
+    position: relative
+}
+
+.tree li::before,.tree li::after {
+    content: '';
+    left: -20px;
+    position: absolute;
+    right: auto
+}
+
+.tree li::before {
+    border-left: 1px solid #999;
+    bottom: 50px;
+    height: 100%;
+    top: 0;
+    width: 1px
+}
+
+.tree li::after {
+    border-top: 1px solid #999;
+    height: 20px;
+    top: 25px;
+    width: 25px
+}
+
+.tree li span {
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border: 1px solid #999;
+    border-radius: 5px;
+    display: inline-block;
+    padding: 3px 8px;
+    text-decoration: none
+}
+
+.tree li.parent_li>span {
+    cursor: pointer
+}
+
+.tree>ul>li::before,.tree>ul>li::after {
+    border: 0
+}
+
+.tree li:last-child::before {
+    height: 30px
+}
+
+.tree li.parent_li>span:hover,.tree li.parent_li>span:hover+ul li span {
+    background: #eee;
+    border: 1px solid #94a0b4;
+    color: #000
+}
+
+.box.box-bordered .box-title {
+    border: 1px solid #ddd;
+}
+
+.tree .box-title {
+    border-bottom: 1px solid #ddd;
+    padding: 7px 0 7px 10px;
+    margin-top: 0px;
+}
+
+.tree .box-title h3 i {
+    margin: 0 10px 0 5px;
+}
+
+.tree .box-content {
+    padding: 20px;
+    background: #fff;
+}
+
+.box.box-bordered .box-content {
+    border: 2px solid #ddd;
+    border-top: 0;
+}
+
+.box-border {
+    border: 1px solid #999;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05)
+}
+/* topology and config */
+#topology {
+    position: relative;
+    color: #000;
+    width: 920px;
+    height: 450px;
+}
+
+.div-switch {
+    position: absolute;
+    top: 150px;
+    background: purple;
+    width: 900px;
+    height: 120px
+}
+
+.div-server {
+    position: absolute;
+    top: 50px;
+    /* background: YellowGreen; */
+    width: 52px;
+    height: 175px;
+}
+
+.info-box {
+    position: absolute;
+    left: 3px;
+    width: 46px;
+    height: 46px;
+    line-height:46px;
+}
+
+.info-font {
+    font-size: xx-small;
+    color: white;
+    text-align: center;
+}
+
+.info-server {
+    top: 3px;
+    background: lightSkyBlue;
+}
+.info-jbod {
+    top: 123px;
+    background: orange;
+    cursor: pointer;
+}
+
+.v-line {
+    position: absolute;
+    left: 25px;
+    background: chocolate;
+    width: 2px;
+    height: 100px;
+    z-index: 2;
+}
+
+.v-line-top {
+    top: 49px;
+}
+
+.v-line-below {
+    top: 23px;
+}
+
+.port {
+    position: absolute;
+    left: 16px;
+    background: Tan;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    z-index: 9;
+}
+
+.server-port {
+    top: 149px;
+}
+
+.jbod-port {
+    top: 3px;
+}
+
+.div-jbod {
+    position: absolute;
+    top: 197px;
+    /* background: Yellow; */
+    width: 52px;
+    height: 175px;
+}
+
+#server-list {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 960px;
+    height: 75px;
+    z-index: 5;
+}
+
+#jbod-list {
+    position: absolute;
+    left: 20px;
+    top: 90px;
+    /* background-color: LavenderBlush; */
+}
+
+.jbod {
+    position: absolute;
+    left: 10px;
+    padding: 4px;
+    height: 50px;
+    /* background-color: GoldenRod; */
+}
+
+.jbod-title {
+    position: absolute;
+    top: 6px;
+    width: 70px;
+    background: orange; 
+    z-index: 9;
+}
+
+.info-disk {
+    position: absolute;
+    top: 6px;
+    background: LightSteelBlue;
+    cursor: pointer;
+    z-index: 9;
+}
