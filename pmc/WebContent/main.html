@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>PMC Configuration-Topology</title>
+
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/application.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="#">PMC</a>
+          <div class="nav-collapse collapse">
+            <p class="navbar-text pull-right">
+              Hello, Admin <a href="login.html" class="navbar-link">Logout</a>
+            </p>
+            <ul class="nav">
+              <li><a href="main.html">Topology</a></li>
+              <li><a href="config.html">Config</a></li>
+              <li><a href="device-info.html">System Info</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span3">
+                <div class="tree">
+                    <ul>
+                        <li>
+                            <span><i class="icon-tasks"></i> SAS Switch Topology
+                            </span>
+                            <ul id="top-item">
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div><!--/span-->
+            <div class="span9">
+    			<div id="topology" class="box-border">
+    				<div class="div-switch" style="left: 10px;"></div>
+    			</div>
+            </div>
+        </div><!--/row-->
+
+        <hr>
+        <footer>
+            <p>&copy; PMC 2014</p>
+        </footer>
+
+    </div><!--/.fluid-container-->
+
+    <script src="js/jquery.min.js"></script>
+    <script>
+
+    	$(function () {
+            // 拓扑图
+   	    	$.get("ss_topology.xml",function(xml){
+   	    		var length = $(xml).find("switch_port").length;
+   	    		var topDiv = $('#topology');
+
+	    		var topItem = $('#top-item');
+	    			
+   	    		$(xml).find("switch_port").each(function(index, ele) {
+   	    			var portId = $(ele).find("port_id").text();
+   	    			var hba = $(ele).find("server").text();
+   	    			var jbod = $(ele).find("jbod").text();
+   	    			
+   	    			if (hba != '') {
+   	    				//添加Server树节点
+   	    				topItem.append('<li><span class="badge badge-info"><i class="icon-minus-sign"></i> Port'+portId+' : Server'+index+'</span></li>');
+   	    				// 添加server节点到拓扑图
+   	    				var serverDiv = $(
+    	    		        '<div class="div-server">'+
+   	       	    	            '<div class="info-box info-server info-font">Server'+index+'</div>'+
+   	       	    	            '<div class="v-line v-line-top"></div>'+
+   	       	    	            '<div class="port server-port info-font">'+index+'</div>'+
+   	   	    	        	'</div>');
+   	    				serverDiv.css("left", 20+52*(index)+"px");
+   	    				topDiv.append(serverDiv);
+   					} else if (jbod != '') {
+   	    				//添加JBOD树节点
+   	    				var parentItem = $('<li class="parent_li"><span class="badge badge-warning" title="Collapse this branch"><i class="icon-minus-sign"></i> JBOD'+index+'</span></li>');
+   	    				parentItem.find('span').on('click', function (e) {
+   	    	                var children = $(this).parent('li.parent_li').find(' > ul > li');
+   	    	                if (children.is(":visible")) {
+   	    	                    children.hide('fast');
+   	    	                    $(this).attr('title', 'Expand this branch').find(' > i').addClass('icon-plus-sign').removeClass('icon-minus-sign');
+   	    	                } else {
+   	    	                    children.show('fast');
+   	    	                    $(this).attr('title', 'Collapse this branch').find(' > i').addClass('icon-minus-sign').removeClass('icon-plus-sign');
+   	    	                }
+   	    	                e.stopPropagation();
+   	    	            });
+   	    				$(ele).find("jbod").find('disk_port').each(function(portIndex, ele) {
+   	    					parentItem.append('<ul><li><a href=""><span><i class="icon-hdd"></i> '+portIndex+'</span></a></li></ul>')
+   	    				});
+   	    				topItem.append(parentItem);
+   	    				
+   	    				// 添加jbod节点到拓扑图
+   	    			    var jbodDiv = $(
+    	    		        '<div class="div-jbod">'+
+        	    	            '<div class="port jbod-port info-font">'+index+'</div>'+
+        	    	    		'<div class="v-line v-line-below"></div>'+
+        	    	            '<div class="info-box info-jbod info-font">JBOD'+index+'</div>'+
+   	   	    	        	'</div>');
+   	    				jbodDiv.css("left", 20+52*(index)+"px");
+   	    				topDiv.append(jbodDiv);
+   					} else {
+   	    				topItem.append('<li><span class="badge badge-info"><i class="icon-minus-sign"></i> Port'+portId+'</span></li>');
+   	    				// 添加空节点到拓扑图
+   	    			    var jbodDiv = $(
+    	    		        '<div class="div-jbod">'+
+        	    	            '<div class="port jbod-port info-font">'+index+'</div>'+
+   	   	    	        	'</div>');
+   	    				jbodDiv.css("left", 20+52*(index)+"px");
+   	    				topDiv.append(jbodDiv);
+   					}
+   	    		});
+            	// 让树的子菜单隐藏起来
+            	$('.tree li.parent_li > span').each(function(index, ele) {
+                    var children = $(this).parent('li.parent_li').find(' > ul > li');
+                    if (children.is(":visible")) {
+                        children.hide('fast');
+                        $(this).attr('title', 'Expand this branch').find(' > i').addClass('icon-plus-sign').removeClass('icon-minus-sign');
+                    } else {
+                        children.show('fast');
+                        $(this).attr('title', 'Collapse this branch').find(' > i').addClass('icon-minus-sign').removeClass('icon-plus-sign');
+                    }
+            	});
+   	    	});
+        });
+    </script>
+  </body>
+</html>
