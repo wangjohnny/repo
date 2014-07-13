@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Topology</title>
+<style>
+#topology {
+    position: relative;
+    color: #000;
+    border: 1px solid #000;
+    width: 1000px;
+    height: 500px
+}
+
+.div-server {
+    position: absolute;
+    top: 50px;
+    /* background: YellowGreen; */
+    width: 52px;
+    height: 175px;
+}
+
+.info-span {
+    position: absolute;
+    left: 3px;
+    width: 46px;
+    height: 46px;
+    line-height:46px;
+    cursor: pointer;
+}
+
+.info-font {
+    font-size: xx-small;
+    color: white;
+    text-align: center;
+}
+
+.info-server {
+    top: 3px;
+    background: lightSkyBlue;
+}
+.info-jbod {
+    top: 123px;
+    background: orange;
+}
+
+.v-line {
+    position: absolute;
+    left: 25px;
+    background: chocolate;
+    width: 2px;
+    height: 100px;
+    z-index: 2;
+}
+
+.v-line-top {
+    top: 49px;
+}
+
+.v-line-below {
+    top: 23px;
+}
+
+.port {
+    position: absolute;
+    left: 16px;
+    background: Tan;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    z-index: 9;
+}
+
+.server-port {
+    top: 149px;
+}
+
+.jbod-port {
+    top: 3px;
+}
+
+.div-switch {
+    position: absolute;
+    top: 150px;
+    /* background-image: url("topology.png"); */
+    background: purple;
+    width: 940px;
+    height: 120px
+}
+
+.div-jbod {
+    position: absolute;
+    top: 197px;
+    /* background: Yellow; */
+    width: 52px;
+    height: 175px;
+}
+
+</style>
+</head>
+<body>
+	<div id="topology">
+		<div class="div-switch" style="left: 30px;"></div>
+        <div class="div-server" style="left: 52px;">
+            <div class="info-span info-server info-font">Server0</div>
+            <div class="v-line v-line-top"></div>
+            <div class="port server-port info-font">0</div>
+        </div>
+        <div class="div-server" style="left: 104px;">
+            <div class="info-span info-server info-font">Server1</div>
+            <div class="v-line v-line-top"></div>
+            <div class="port server-port info-font">1</div>
+        </div>
+        <div class="div-jbod" style="left: 156px;">
+            <div class="port jbod-port info-font">2</div>
+    		<div class="v-line v-line-below"></div>
+            <div class="info-span info-jbod info-font">JBOD0</div>
+        </div>
+	</div>
+    <script src="js/jquery.min.js"></script>
+    <script>
+    $(document).ready(function() {
+    	/* $.get("display.xml",function(xml){
+    		var length = $(xml).find("switch_port").length;
+    		$(xml).find("switch_port").each(function(index, ele) {
+    			var portId = $(ele).find("port_id").text();
+    			var hba = $(ele).find("hba").text();
+    			var jbod = $(ele).find("jbod").text();
+
+    			// 添加port端点
+				var portDiv = $('<div class="div-port port-txt"></div>').text(index);
+				portDiv.css("left", (50*(index+1))+"px");
+				$('#topology').append(portDiv);
+    			
+    			if (hba != '') {
+    				
+    				// 添加竖线
+    				var lineDiv = $('<div class="v-line v-line-top"></div>');
+    				lineDiv.css("left", (70*(index+1))+"px");
+    				$('#topology').append(lineDiv);
+    				
+    				// 添加server
+    				var serverDiv = $('<div class="div-server server-txt"></div>').text('Server'+index);
+    				serverDiv.css("left", (60*(index+1))+"px");
+    				$('#topology').append(serverDiv);
+    				
+				} else if (jbod != '') {
+    				
+    				// 添加竖线
+    				var lineDiv = $('<div class="v-line v-line-below"></div>');
+    				lineDiv.css("left", (70*(index+1))+"px");
+    				$('#topology').append(lineDiv);
+    				
+    				// 添加jbod
+    				var jbodDiv = $('<div class="div-jbod jbod-txt"></div>').text('JBOD'+index);
+    				jbodDiv.css("left", (60*(index+1))+"px");
+    				$('#topology').append(jbodDiv);
+				} else {
+					alert("xml结构不对");
+				}
+    		});
+    	}); */
+    });
+    </script>
+</body>
+</html>
